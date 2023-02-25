@@ -1,6 +1,9 @@
 package linkedlist
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	index_out_of_bound = "index out of bound"
@@ -469,4 +472,9 @@ func (l linkedList[T]) Last() (T, error) {
 
 func (l linkedList[T]) isEmpty() bool {
 	return l.size == 0
+}
+
+// Overwrite the Stringer Interface Function For this Struct
+func (l linkedList[T]) String() string {
+	return fmt.Sprintf("%v", l.ToSlice())
 }

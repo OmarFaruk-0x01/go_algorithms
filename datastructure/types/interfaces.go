@@ -16,7 +16,7 @@ type LinkedList[T comparable] interface {
 	Last() (T, error)
 }
 
-type StackQueue[T comparable] interface {
+type Stack[T comparable] interface {
 	Push(item T)
 	Pop() (T, error)
 	Peek() (T, error)
