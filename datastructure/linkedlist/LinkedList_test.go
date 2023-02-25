@@ -1,4 +1,4 @@
-package datastructure
+package linkedlist
 
 import (
 	"testing"
@@ -12,7 +12,7 @@ type Person struct {
 }
 
 func TestFindIndex(t *testing.T) {
-	str := LinkedList[string]{}
+	str := New[string]()
 
 	str.AddFirst("Sadik")
 	str.AddFirst("Omar")
@@ -25,115 +25,149 @@ func TestFindIndex(t *testing.T) {
 }
 
 func TestAddFirst(t *testing.T) {
-	list := LinkedList[int]{}
+	list := New[int]()
 	list.AddFirst(10)
 	list.AddFirst(20)
 	list.AddFirst(30)
-	assert.Equal(t, 30, list.First())
+	f, _ := list.First()
 
-	str := LinkedList[string]{}
+	assert.Equal(t, 30, f)
+
+	str := New[string]()
+
+	_, err := str.First()
+	assert.NotNil(t, err)
+
 	str.AddFirst("Mango")
 	str.AddFirst("Banana")
 	str.AddFirst("Coconut")
-	assert.Equal(t, "Coconut", str.First())
+	sf, _ := str.First()
+	assert.Equal(t, "Coconut", sf)
 
-	person := LinkedList[Person]{}
+	person := New[Person]()
+	_, err = person.First()
+
+	assert.NotNil(t, err)
 	person.AddFirst(Person{name: "Omar Faruk", age: 20})
 	person.AddFirst(Person{name: "Tanvir Raj", age: 25})
-	assert.Equal(t, Person{name: "Tanvir Raj", age: 25}, person.First())
-	assert.Equal(t, uint(25), person.First().age)
-	assert.Equal(t, "Tanvir Raj", person.First().name)
+	p1, _ := person.First()
+	assert.Equal(t, Person{name: "Tanvir Raj", age: 25}, p1)
+	assert.Equal(t, uint(25), p1.age)
+	assert.Equal(t, "Tanvir Raj", p1.name)
 }
 
 func TestAddLast(t *testing.T) {
-	list := LinkedList[int]{}
+	list := New[int]()
+	_, err := list.Last()
+
+	assert.NotNil(t, err)
+
 	list.AddLast(30)
 	list.AddLast(20)
 	list.AddLast(10)
-	assert.Equal(t, 10, list.Last())
 
-	str := LinkedList[string]{}
+	l, err := list.Last()
+	assert.Nil(t, err)
+	assert.Equal(t, 10, l)
+
+	str := New[string]()
+	_, err = str.Last()
+	assert.NotNil(t, err)
+
 	str.AddLast("Coconut")
 	str.AddLast("Mango")
 	str.AddLast("Banana")
-	assert.Equal(t, "Banana", str.Last())
 
-	person := LinkedList[Person]{}
+	ls, err := str.Last()
+	assert.Nil(t, err)
+	assert.Equal(t, "Banana", ls)
+
+	person := New[Person]()
+	_, err = person.Last()
+	assert.Panics(t, func() { panic(err) })
+
 	person.AddLast(Person{name: "Tanvir Raj", age: 25})
 	person.AddLast(Person{name: "Omar Faruk", age: 20})
-	assert.Equal(t, Person{name: "Omar Faruk", age: 20}, person.Last())
-	assert.Equal(t, uint(20), person.Last().age)
-	assert.Equal(t, "Omar Faruk", person.Last().name)
+
+	p1, err := person.Last()
+	assert.Nil(t, err)
+	assert.Equal(t, Person{name: "Omar Faruk", age: 20}, p1)
+	assert.Equal(t, uint(20), p1.age)
+	assert.Equal(t, "Omar Faruk", p1.name)
 }
 
 func TestInsertAt(t *testing.T) {
-	list := LinkedList[int]{}
+	list := New[int]()
 	list.InsertAt(30, 0)
 	list.InsertAt(20, 1)
 	list.InsertAt(10, 2)
 	assert.Equal(t, 1, list.FindIndex(20))
 
-	str := LinkedList[string]{}
+	str := New[string]()
 	str.InsertAt("Coconut", 0)
 	str.InsertAt("Banana", 1)
 	str.InsertAt("Mango", 1)
 	str.InsertAt("Lichi", 3)
 	str.InsertAt("Orange", str.Size())
 
-	assert.Equal(t, "Orange", str.Last())
+	last, err := str.Last()
+	assert.Nil(t, err)
+	assert.Equal(t, "Orange", last)
 	assert.Equal(t, 2, str.FindIndex("Banana"))
 	assert.Panics(t, func() {
 		str.InsertAt("Orange", 6)
 	})
 
-	person := LinkedList[Person]{}
+	person := New[Person]()
 	person.InsertAt(Person{name: "Tanvir Raj", age: 25}, 0)
 	person.InsertAt(Person{name: "Omar Faruk", age: 21}, 1)
 	person.InsertAt(Person{name: "Sadik Ahmad", age: 20}, 1)
-	assert.Equal(t, Person{name: "Omar Faruk", age: 21}, person.Last())
-	assert.Equal(t, uint(21), person.Last().age)
-	assert.Equal(t, "Omar Faruk", person.Last().name)
+	p1, err := person.Last()
+	assert.Nil(t, err)
+	assert.Equal(t, Person{name: "Omar Faruk", age: 21}, p1)
+	assert.Equal(t, uint(21), p1.age)
+	assert.Equal(t, "Omar Faruk", p1.name)
 }
 
 func TestRemoveFirst(t *testing.T) {
-	str := LinkedList[string]{}
+	str := New[string]()
 
-	assert.Panics(t, func() {
-		str.RemoveFirst()
-	})
+	err := str.RemoveAt(2)
+	assert.NotNil(t, err)
 
 	str.AddFirst("Omar")
 	str.AddFirst("Faruk")
 	str.RemoveFirst()
 
-	assert.Equal(t, "Omar", str.First())
+	s, err := str.First()
+	assert.Nil(t, err)
+
+	assert.Equal(t, "Omar", s)
 }
 
 func TestRemoveLast(t *testing.T) {
-	str := LinkedList[string]{}
-
-	assert.Panics(t, func() {
-		str.RemoveLast()
-	})
-
+	str := New[string]()
+	err := str.RemoveAt(2)
+	assert.NotNil(t, err)
 	str.AddFirst("Omar")
 	str.AddFirst("Faruk")
 	str.RemoveLast()
+	s, err := str.Last()
+	assert.Nil(t, err)
 
-	assert.Equal(t, "Faruk", str.First())
+	assert.Equal(t, "Faruk", s)
 }
 
 func TestRemoveAt(t *testing.T) {
-	str := LinkedList[string]{}
-
-	assert.Panics(t, func() {
-		str.RemoveAt(2)
-	})
-
+	str := New[string]()
+	err := str.RemoveAt(2)
+	assert.NotNil(t, err)
 	str.AddFirst("Sadik")
 	str.AddFirst("Faruk")
 	str.AddFirst("Omar")
 	str.RemoveAt(1)
+	s, err := str.Last()
+	assert.Nil(t, err)
 
-	assert.Equal(t, "Sadik", str.Last())
+	assert.Equal(t, "Sadik", s)
 }
