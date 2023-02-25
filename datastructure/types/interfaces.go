@@ -23,3 +23,13 @@ type Stack[T comparable] interface {
 	Size() int
 	IsEmpty() bool
 }
+
+type Queue[T comparable] interface {
+	Enqueue(item T) error
+	Dequeue() (T, error)
+	Peek() (T, error)
+	Size() int
+	IsEmpty() bool
+	IsFull() bool
+	SetMax(max int)
+}
