@@ -9,14 +9,22 @@ const (
 	stack_empty_error = "stack is empty"
 )
 
+type Stack[T comparable] interface {
+	Push(item T)
+	Pop() (T, error)
+	Peek() (T, error)
+	Size() int
+	IsEmpty() bool
+}
+
 type stack[T comparable] struct {
 	stack []T
 	size  int
 	_nil  T
 }
 
-func New[T comparable]() stack[T] {
-	return stack[T]{stack: []T{}, size: 0}
+func New[T comparable]() *stack[T] {
+	return &stack[T]{stack: []T{}, size: 0}
 }
 
 func (s *stack[T]) Push(item T) {

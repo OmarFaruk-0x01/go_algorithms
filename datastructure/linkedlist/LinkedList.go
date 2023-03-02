@@ -27,6 +27,22 @@ type node[T comparable] struct {
 	next  *node[T]
 }
 
+type LinkedList[T comparable] interface {
+	AddFirst(item T)
+	AddLast(item T)
+	InsertAt(item T, index int)
+	RemoveAt(index int) error
+	RemoveFirst() error
+	RemoveLast() error
+	Traversal(func(item T, index int))
+	FindIndex(item T) int
+	ToSlice() []T
+	Contains(item T) bool
+	Size() int
+	First() (T, error)
+	Last() (T, error)
+}
+
 // LinkedList is a data structure that stores a sequence of elements. Each element is linked to the next element in the sequence through a "next" pointer. The first element in the sequence is called the "head" of the list, and the last element is called the "tail" of the list.
 //
 // Parameters:

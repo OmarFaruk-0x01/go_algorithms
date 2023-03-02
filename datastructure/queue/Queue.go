@@ -10,6 +10,16 @@ const (
 	queue_full_error  = "queue is full"
 )
 
+type Queue[T comparable] interface {
+	Enqueue(item T) error
+	Dequeue() (T, error)
+	Peek() (T, error)
+	Size() int
+	IsEmpty() bool
+	IsFull() bool
+	SetMax(max int)
+}
+
 type queue[T comparable] struct {
 	queue []T
 	size  int
@@ -17,7 +27,7 @@ type queue[T comparable] struct {
 	_nil  T
 }
 
-func New[T comparable](maxItem int) queue[T] {
+func NewSliceQueue[T comparable](maxItem int) queue[T] {
 	return queue[T]{queue: []T{}, size: 0, max: maxItem}
 }
 
@@ -47,15 +57,15 @@ func (s *queue[T]) Peek() (T, error) {
 	return s.queue[0], nil
 }
 
-func (s queue[T]) IsEmpty() bool {
+func (s *queue[T]) IsEmpty() bool {
 	return s.size == 0
 }
 
-func (s queue[T]) Size() int {
+func (s *queue[T]) Size() int {
 	return s.size
 }
 
-func (s queue[T]) IsFull() bool {
+func (s *queue[T]) IsFull() bool {
 	return s.max == s.size
 }
 

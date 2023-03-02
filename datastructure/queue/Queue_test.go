@@ -7,7 +7,7 @@ import (
 )
 
 func TestEnqueue(t *testing.T) {
-	q := New[int](3)
+	q := NewSliceQueue[int](3)
 	err := q.Enqueue(20)
 	assert.False(t, q.IsEmpty())
 	assert.Nil(t, err)
@@ -21,7 +21,7 @@ func TestEnqueue(t *testing.T) {
 }
 
 func TestDequeue(t *testing.T) {
-	q := New[int](3)
+	q := NewSliceQueue[int](3)
 	q.Enqueue(20)
 	q.Enqueue(30)
 	q.Enqueue(10)
